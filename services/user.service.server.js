@@ -35,12 +35,25 @@ module.exports = function (app) {
         res.send(req.session['currentUser']);
     }
 
+    // function createUser(req, res) {
+    //     var user = req.body;
+    //     userModel.createUser(user)
+    //         .then(function (user) {
+    //             req.session['currentUser'] = user;
+    //             res.send(user);
+    //         })
+    // }
     function createUser(req, res) {
         var user = req.body;
-        userModel.createUser(user)
-            .then(function (user) {
-                req.session['currentUser'] = user;
-                res.send(user);
+        req.session['currentUser'] = user;
+        userModel.findUserByUsername(user.username)
+            .then(response => {
+                if(response) {
+                    res.json({err: 'Username already exist!'})
+                } else {
+                    userModel.createUser(user)
+                        .then(response => res.json(response));
+                }
             })
     }
 
