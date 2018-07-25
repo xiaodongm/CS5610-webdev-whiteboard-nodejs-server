@@ -22,7 +22,7 @@ var api = {
     createUser: createUser,
     findAllUsers: findAllUsers,
     findUserById: findUserById,
-    findUserByCredentials: findUserByCredentials
+    findUserByCredentials: findUserByCredentials,
 };
 
 module.exports = api;
