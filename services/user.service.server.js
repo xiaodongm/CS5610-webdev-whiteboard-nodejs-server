@@ -13,8 +13,12 @@ module.exports = function (app) {
         userModel
             .findUserByCredentials(credentials)
             .then(function(user) {
-                req.session['currentUser'] = user;
-                res.json(user);
+                if (!user){
+                    res.json({err: 'Username not exist!'})
+                } else {
+                    req.session['currentUser'] = user;
+                    res.json(user);
+                }
             })
     }
 
