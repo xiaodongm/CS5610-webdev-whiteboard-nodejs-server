@@ -21,6 +21,10 @@ module.exports = function (app) {
     function enrollStudentInSection(req, res) {
         var sectionId = req.params.sectionId;
         var currentUser = req.session.currentUser;
+        if(!currentUser) {
+            res.json({err: 'No logged in user!'})
+            return;
+        }
         var studentId = currentUser._id;
         var enrollment = {
             student: studentId,
