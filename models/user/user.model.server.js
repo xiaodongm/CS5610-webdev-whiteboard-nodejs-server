@@ -3,7 +3,7 @@ var userSchema = require('./user.schema.server');
 var userModel = mongoose.model('UserModel', userSchema);
 
 function findUserByCredentials(credentials) {
-    return userModel.findOne(credentials, {username: 1});
+    return userModel.findOne(credentials);
 }
 
 function findUserById(userId) {
@@ -12,6 +12,13 @@ function findUserById(userId) {
 
 function findUserByUsername(username) {
     return userModel.findOne({username: username});
+}
+
+function updateUser(user) {
+    return userModel.findOneAndUpdate(
+        {_id: user._id},
+        {$set: user}
+    );
 }
 
 function createUser(user) {
@@ -28,6 +35,7 @@ var api = {
     findUserById: findUserById,
     findUserByCredentials: findUserByCredentials,
     findUserByUsername: findUserByUsername,
+    updateUser: updateUser,
 };
 
 module.exports = api;

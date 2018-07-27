@@ -4,10 +4,11 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/white-board-app-data');
 
 
-var app = express()
+var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin",
@@ -23,11 +24,16 @@ app.use(function(req, res, next) {
 
 
 
-var session = require('express-session')
+var session = require('express-session');
+var idleTimeoutSeconds = 1800;
 app.use(session({
-    resave: false,
+    resave: true,
     saveUninitialized: true,
-    secret: 'any string'
+    secret: 'any string',
+    cookie: {
+        maxAge: idleTimeoutSeconds * 1000,
+    },
+    rolling: true
 }));
 
 
