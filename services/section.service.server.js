@@ -4,6 +4,7 @@ module.exports = function (app) {
     app.get('/api/course/:courseId/section', findSectionsForCourse);
     app.post('/api/section/:sectionId/enrollment', enrollStudentInSection);
     app.get('/api/student/section', findSectionsForStudent);
+    app.delete('/api/section/:sectionId', deleteSection);
 
     var sectionModel = require('../models/section/section.model.server');
     var enrollmentModel = require('../models/enrollment/enrollment.model.server');
@@ -22,7 +23,7 @@ module.exports = function (app) {
         var sectionId = req.params.sectionId;
         var currentUser = req.session.currentUser;
         if(!currentUser) {
-            res.json({err: 'No logged in user!'})
+            res.json({err: 'No logged in user!'});
             return;
         }
         var studentId = currentUser._id;
@@ -59,4 +60,13 @@ module.exports = function (app) {
                 res.json(section);
             })
     }
+
+    function deleteSection(req, res) {
+        var sectionId = req.params['sectionId'];
+        enrollmentModel.deleteEnrollmentSection(sectionId)
+            .then(() => sectionModel.deleteSection(sectionId)
+                .then(res.send(200)));
+
+    }
+
 };
