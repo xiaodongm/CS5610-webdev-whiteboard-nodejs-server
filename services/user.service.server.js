@@ -1,7 +1,7 @@
 module.exports = function (app) {
     app.get('/api/user', findAllUsers);
     app.get('/api/user/:userId', findUserById);
-    app.post('/api/user', createUser);
+    app.post('/api/register', createUser);
     app.get('/api/profile', profile);
     app.post('/api/logout', logout);
     app.post('/api/login', login);
