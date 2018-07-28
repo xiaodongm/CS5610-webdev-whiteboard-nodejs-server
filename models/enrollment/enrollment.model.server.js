@@ -16,6 +16,9 @@ function findSectionsForStudent(studentId) {
         .exec();
 }
 
+function unEnrollSection(enrollment) {
+    return enrollmentModel.remove(enrollment);
+}
 
 function deleteEnrollmentSection(sectionId) {
     return enrollmentModel.remove({section: sectionId});
@@ -25,4 +28,5 @@ module.exports = {
     enrollStudentInSection: enrollStudentInSection,
     findSectionsForStudent: findSectionsForStudent,
     deleteEnrollmentSection: deleteEnrollmentSection,
+    unEnrollSection: unEnrollSection,
 };

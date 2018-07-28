@@ -2,9 +2,10 @@ module.exports = function (app) {
 
     app.post('/api/course/:courseId/section', createSection);
     app.get('/api/course/:courseId/section', findSectionsForCourse);
-    app.post('/api/section/:sectionId/enrollment', enrollStudentInSection);
-    app.get('/api/student/section', findSectionsForStudent);
+    app.post('/api/student/:sid/section/:kid', enrollStudentInSection);
+    app.get('/api/student/:sid/section', findSectionsForStudent);
     app.delete('/api/section/:sectionId', deleteSection);
+    app.delete('/api/student/:sid/section/:kid', unEnrollSection);
 
     var sectionModel = require('../models/section/section.model.server');
     var enrollmentModel = require('../models/enrollment/enrollment.model.server');
@@ -20,7 +21,7 @@ module.exports = function (app) {
     }
 
     function enrollStudentInSection(req, res) {
-        var sectionId = req.params.sectionId;
+        var sectionId = req.params.kid;
         var currentUser = req.session.currentUser;
         if(!currentUser) {
             res.json({err: 'No logged in user!'});
@@ -67,6 +68,21 @@ module.exports = function (app) {
             .then(() => sectionModel.deleteSection(sectionId)
                 .then(res.send(200)));
 
+    }
+
+    function unEnrollSection(req, res) {
+        var sectionId = req.params['kid'];
+        var currentUser = req.session['currentUser'];
+        var studentId = currentUser._id;
+        const enrollment = {
+            student: studentId,
+            section: sectionId
+        };
+        console.log(sectionId);
+        console.log(studentId);
+        enrollmentModel.unEnrollSection(enrollment)
+            .then(() => sectionModel.incrementSectionSeats(sectionId))
+            .then(res.send(200));
     }
 
 };

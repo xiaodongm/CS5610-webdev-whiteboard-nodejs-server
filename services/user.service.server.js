@@ -44,7 +44,13 @@ module.exports = function (app) {
     }
 
     function profile(req, res) {
-        res.send(req.session['currentUser']);
+        var currentUser = req.session['currentUser'];
+        if (currentUser) {
+            res.send(req.session['currentUser']);
+        } else {
+            res.json({err: 'No user logged in!'});
+        }
+
     }
 
 
