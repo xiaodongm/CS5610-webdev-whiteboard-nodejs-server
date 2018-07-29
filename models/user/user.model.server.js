@@ -10,6 +10,10 @@ function findUserById(userId) {
     return userModel.findById(userId);
 }
 
+function deleteUser(userId) {
+    return userModel.findOneAndDelete({_id: userId});
+}
+
 function findUserByUsername(username) {
     return userModel.findOne({username: username});
 }
@@ -36,6 +40,7 @@ var api = {
     findUserByCredentials: findUserByCredentials,
     findUserByUsername: findUserByUsername,
     updateUser: updateUser,
+    deleteUser: deleteUser
 };
 
 module.exports = api;

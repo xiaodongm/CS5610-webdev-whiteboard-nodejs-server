@@ -6,8 +6,11 @@ module.exports = function (app) {
     app.post('/api/logout', logout);
     app.post('/api/login', login);
     app.put('/api/profile', updateUser);
+    app.delete('/api/profile', deleteUser);
 
     var userModel = require('../models/user/user.model.server');
+    var enrollmentModel = require('../models/enrollment/enrollment.model.server');
+    var sectionModel = require('../models/section/section.model.server');
 
     function login(req, res) {
         var credentials = req.body;
@@ -53,17 +56,36 @@ module.exports = function (app) {
 
     }
 
+    function deleteUser(req, res) {
+        var currentUser = req.session['currentUser'];
+        var studentSections;
+        enrollmentModel.findSectionsForStudent(currentUser._id)
+            .then(sections => studentSections = sections )
+            .then(() => {
+                enrollmentModel.deleteEnrollmentUser(currentUser._id)
+                    .then(() => userModel.deleteUser(currentUser._id))
+            })
+            .then(() => {
+                for (let i = 0; i < studentSections.length; i++) {
+                    sectionModel.incrementSectionSeats(studentSections[i].section._id)
+                        .then((response) => console.log(response));
+                }
+            }).then(response => res.json(response));
+    }
+
 
     function createUser(req, res) {
         var user = req.body;
-        req.session['currentUser'] = user;
         userModel.findUserByUsername(user.username)
             .then(response => {
                 if(response) {
                     res.json({err: 'Username already exist!'})
                 } else {
                     userModel.createUser(user)
-                        .then(response => res.json(response));
+                        .then(response => {
+                            req.session['currentUser'] = response;
+                            res.json(response);
+                        });
                 }
             })
     }

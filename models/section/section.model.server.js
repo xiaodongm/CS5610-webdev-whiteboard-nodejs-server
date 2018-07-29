@@ -39,6 +39,8 @@ function incrementSectionSeats(sectionId) {
     ;
 }
 
+
+
 module.exports = {
     createSection: createSection,
     findSectionsForCourse: findSectionsForCourse,
