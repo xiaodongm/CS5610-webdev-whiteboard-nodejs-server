@@ -2,7 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/white-board-app-data');
-mongoose.connect('mongodb://dbuser:dbpassword@ds159661.mlab.com:59661/heroku_w2sgg17l');
+mongoose.connect('mongodb://dbUsername:dbPassword@ds159661.mlab.com:59661/heroku_w2sgg17l');
 
 
 var app = express();
