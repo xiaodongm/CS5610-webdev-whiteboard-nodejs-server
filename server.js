@@ -1,7 +1,8 @@
 var express = require('express')
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/white-board-app-data');
+// mongoose.connect('mongodb://localhost/white-board-app-data');
+mongoose.connect('mongodb://dbuser:dbpassword@ds159661.mlab.com:59661/heroku_w2sgg17l');
 
 
 var app = express();
@@ -12,7 +13,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin",
-        "http://localhost:4200");
+        "https://whiteboard-angular-app.herokuapp.com/home");
+        // "http://localhost:4200");
     res.header("Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods",
