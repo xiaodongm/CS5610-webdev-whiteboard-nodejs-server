@@ -46,7 +46,8 @@ module.exports = function (app) {
         var studentId = currentUser._id;
         var enrollment = {
             student: studentId,
-            section: sectionId
+            section: sectionId,
+            grade: 'pending'
         };
 
         sectionModel
