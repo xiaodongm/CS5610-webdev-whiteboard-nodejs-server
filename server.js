@@ -2,7 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/white-board-app-data');
-mongoose.connect('mongodb://dbUsername:dbPassword@ds159661.mlab.com:59661/heroku_w2sgg17l');
+mongoose.connect('mongodb://heroku_w2sgg17l:u12u0l4tm5r15degme7uqed6dc@ds159661.mlab.com:59661/heroku_w2sgg17l');
 
 
 var app = express();
@@ -12,8 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin",
-        "https://whiteboard-angular-app.herokuapp.com/home");
+    res.header("Access-Control-Allow-Origin", "https://whiteboard-angular-app.herokuapp.com");
         // "http://localhost:4200");
     res.header("Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept");
@@ -77,4 +76,4 @@ userService(app);
 require('./services/section.service.server')(app);
 // require('./services/quiz.service.server')(app);
 
-app.listen(4000);
+app.listen(process.env.PORT || 4000);
